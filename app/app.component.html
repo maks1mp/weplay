@@ -1,0 +1,34 @@
+<section 
+  [ngClass]="{'success': application.status === 'success', 
+                      'error': application.status === 'error',
+                      'loading': application.status === 'loading'}"
+  class="main"      
+>
+  <div class="container">
+    
+    <app-search 
+      [query]="query" 
+      (request)="onSearch($event)"
+    >
+    </app-search>
+
+    <h2 *ngIf="application.status === 'error'">Error:{{ application.error }}</h2>
+
+    <div *ngIf="repositories && user.login">
+      <app-title [userData]="user"> </app-title> 
+      <app-repos 
+        [repos]="repositories" 
+        (onRedirect)="redirectToGit($event)"
+        (showReadme)="onShowReadmePreview($event)"
+      >
+      </app-repos>
+    </div>
+  </div>
+  <app-readme 
+    [readmeContent]="readme.content"
+    *ngIf="readme.isVisible"
+    (close)="onCloseReadme($event)"
+  >
+  </app-readme>  
+</section>
+
